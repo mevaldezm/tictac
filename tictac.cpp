@@ -16,7 +16,6 @@ TicTac::TicTac()
 
 void TicTac::Wait(int sec)
 {
-
     // time_t end = time(NULL) * sec;
     // while( time(NULL) < end ) ;
 
@@ -147,7 +146,7 @@ void TicTac::Print()
 
     for (size_t n{}; n < ROWS; ++n)
     {
-        cout << rows[n] << "|";
+        cout << rows[n] << " | ";
         for (size_t m{}; m < COLS; ++m)
             cout << (char)grid[n][m] << " | ";
         cout << endl;

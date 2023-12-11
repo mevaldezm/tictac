@@ -10,7 +10,7 @@ const size_t COLS  = 3;
 
 enum Mark
 {
-    EMPTY,
+    EMPTY  = 32, //SPACE
     NOUGHT = 79, //ASCII O
     CROSS  = 88  //ASCII X
 };
