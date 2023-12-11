@@ -1,8 +1,8 @@
 #include "tictac.h"
 using namespace std;
 
-int main(int argc, char const *argv[])
-{
+int main(){
+	
     UserOptions options;
 
     while (true)
@@ -12,5 +12,4 @@ int main(int argc, char const *argv[])
 
     } // while
 
-    return EXIT_SUCCESS;
 }

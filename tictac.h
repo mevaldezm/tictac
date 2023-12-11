@@ -11,8 +11,8 @@ const size_t COLS  = 3;
 enum Mark
 {
     EMPTY,
-    NOUGHT,
-    CROSS
+    NOUGHT = 79, //ASCII O
+    CROSS  = 88  //ASCII X
 };
 enum Winner
 {
@@ -33,7 +33,6 @@ private:
     char rows[ROWS] = {'A', 'B', 'C'};
     Mark user_mark;
     Mark game_mark;
-    char MarkToChar(Mark);
     Winner MarkToWinner(Mark);
     size_t GetRow(char);
 

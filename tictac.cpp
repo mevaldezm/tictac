@@ -19,8 +19,8 @@ void TicTac::Wait(int sec)
 
     // time_t end = time(NULL) * sec;
     // while( time(NULL) < end ) ;
-    
-    //window only
+
+    // window only
     Sleep(1000 * sec);
 }
 void TicTac::Play()
@@ -65,17 +65,7 @@ bool TicTac::Play(const string &coord)
 
 void TicTac::SetMarks(char mark)
 {
-    switch (toupper(mark))
-    {
-    case 'X':
-        user_mark = CROSS;
-        break;
-    case 'O':
-        user_mark = NOUGHT;
-        break;
-    default:
-        break;
-    }
+    user_mark = (Mark)toupper(mark);
     game_mark = user_mark == NOUGHT ? CROSS : NOUGHT;
 }
 
@@ -111,27 +101,6 @@ void TicTac::Reset()
     for (size_t n{}; n < ROWS; ++n)
         for (size_t m{}; m < COLS; ++m)
             grid[n][m] = EMPTY;
-}
-
-char TicTac::MarkToChar(Mark mark)
-{
-    char value{};
-
-    switch (mark)
-    {
-    case CROSS:
-        value = 'X';
-        break;
-    case NOUGHT:
-        value = 'O';
-        break;
-    case EMPTY:
-        value = ' ';
-        break;
-    default:
-        break;
-    }
-    return value;
 }
 
 Winner TicTac::MarkToWinner(Mark mark)
@@ -180,7 +149,7 @@ void TicTac::Print()
     {
         cout << rows[n] << "|";
         for (size_t m{}; m < COLS; ++m)
-            cout << setw(2) << MarkToChar(grid[n][m]) << " | ";
+            cout << (char)grid[n][m] << " | ";
         cout << endl;
     }
 }
@@ -234,7 +203,6 @@ void menu(UserOptions &options)
 
 void play(const UserOptions &options)
 {
-
     TicTac tic;
     string cell;
 
@@ -263,7 +231,6 @@ void play(const UserOptions &options)
         cin >> cell;
         cin.clear();
         //
-
         if (cell == "Q" || cell == "q")
             bye();
 
@@ -283,6 +250,7 @@ void play(const UserOptions &options)
             cout << "Game won !!!" << endl;
             break;
         }
+
     } // for
 
     tic.Reset();
