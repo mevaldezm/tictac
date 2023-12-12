@@ -98,7 +98,7 @@ Winner TicTac::CheckWinner()
         for (size_t m{}; m < COLS; ++m)
             if (grid[n][m] != EMPTY)
                 count++;
-                
+
     if (count == CELLS)
         return DRAW;
 
@@ -244,20 +244,24 @@ void play(const UserOptions &options)
             tic.Print();
         }
         else
-            cout << cell << " is not a valid cell. Please try again." << endl;
+            cout << uppercase << cell << " is not a valid cell. Please try again." << endl;
 
         Winner winner = tic.CheckWinner();
 
         if (winner == USER)
         {
-            cout << "You won !!!" << endl;
-            break;
+            cout << "You won !!" << endl;
         }
         else if (winner == GAME)
         {
-            cout << "Game won !!!" << endl;
-            break;
+            cout << "Game won!!" << endl;
         }
+        else if (winner == DRAW)
+        {
+            cout << "Game ended tie." << endl;
+            break;
+        } 
+        
 
     } // for
 
