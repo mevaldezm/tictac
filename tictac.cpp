@@ -143,6 +143,8 @@ size_t TicTac::GetRow(char row)
 
 void TicTac::Print()
 {
+    cout << endl;
+
     for (size_t i = 0; i < COLS; i++)
     {
         cout << setw(3) << " " << i + 1 << " ";
@@ -156,6 +158,7 @@ void TicTac::Print()
             cout << (char)grid[n][m] << " | ";
         cout << endl;
     }
+    cout << endl;
 }
 
 void bye()
@@ -171,7 +174,7 @@ void menu(UserOptions &options)
 
     if (count > 0)
     {
-        cout << "Would you like to continue Y, N?";
+        cout << "\nEnter Y to continue playing: ";
         cin >> choice;
         choice = toupper(choice);
         cin.clear();
@@ -183,26 +186,30 @@ void menu(UserOptions &options)
 
     do
     {
-        cout << "Please choose X, O for game mark or Q to quit: ";
+        cout << "Choose a mark (X, O), (Q)uit ";
         cin >> options.user_mark;
         options.user_mark = toupper(options.user_mark);
         cin.clear();
 
         if (options.user_mark == 'Q')
+        {
             bye();
+        }
 
     } while (options.user_mark != 'X' &&
              options.user_mark != 'O' &&
              options.user_mark != 'Q');
     //
-    cout << "Please choose Y, N for the game stater, Q to quit: ";
+    cout << "Choose (Y, N) for game stater, (Q)uit: ";
     cin >> options.game_starter;
     //
     options.game_starter = toupper(options.game_starter);
     cin.clear();
 
     if (options.game_starter == 'Q')
+    {
         bye();
+    }
 }
 
 void play(const UserOptions &options)
@@ -231,7 +238,7 @@ void play(const UserOptions &options)
 
     for (size_t i = 0; i < CELLS; i++)
     {
-        cout << "\nEnter a cell [A2, B1, C3, etc.], or Q to quit: ";
+        cout << "\nEnter a Cell (A1, B2,...), (Q)uit: ";
         cin >> cell;
         cin.clear();
         //
@@ -244,24 +251,25 @@ void play(const UserOptions &options)
             tic.Print();
         }
         else
-            cout << uppercase << cell << " is not a valid cell. Please try again." << endl;
+            cout << "Invalid cell: " << cell <<". Try again." << endl;
 
         Winner winner = tic.CheckWinner();
 
         if (winner == USER)
         {
             cout << "You won !!" << endl;
+            break;
         }
         else if (winner == GAME)
         {
             cout << "Game won!!" << endl;
+            break;
         }
         else if (winner == DRAW)
         {
             cout << "Game ended tie." << endl;
             break;
-        } 
-        
+        }
 
     } // for
 
