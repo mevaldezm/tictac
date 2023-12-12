@@ -18,7 +18,8 @@ enum Winner
 {
     NONE,
     GAME,
-    USER
+    USER,
+    DRAW
 };
 struct UserOptions
 {

@@ -49,7 +49,7 @@ bool TicTac::Play(const string &coord)
 
     col--; // matrix column
 
-    if (col < 0 || col > 2)
+    if ((col < 0 || col > 2) || (row < 0 || row > 2))
         return false;
 
     Mark value = grid[row][col];
@@ -75,6 +75,8 @@ Mark TicTac::GetUserMark()
 
 Winner TicTac::CheckWinner()
 {
+    int count{};
+
     // check rows
     for (size_t n{}; n < ROWS; n++)
         if (grid[n][0] == grid[n][1] && grid[n][0] == grid[n][2])
@@ -91,6 +93,14 @@ Winner TicTac::CheckWinner()
 
     if (grid[0][2] == grid[1][1] && grid[1][1] == grid[2][0])
         return MarkToWinner(grid[0][2]);
+
+    for (size_t n{}; n < ROWS; ++n)
+        for (size_t m{}; m < COLS; ++m)
+            if (grid[n][m] != EMPTY)
+                count++;
+                
+    if (count == CELLS)
+        return DRAW;
 
     return NONE;
 }
@@ -123,17 +133,12 @@ Winner TicTac::MarkToWinner(Mark mark)
     return winner;
 }
 
-size_t TicTac::GetRow(char val)
+size_t TicTac::GetRow(char row)
 {
-    size_t row = 0;
-
     for (size_t n{}; n < ROWS; ++n)
-        if (rows[n] == val)
-        {
-            row = n;
-            break;
-        }
-    return row;
+        if (rows[n] == row)
+            return n;
+    return -1;
 }
 
 void TicTac::Print()
@@ -233,9 +238,13 @@ void play(const UserOptions &options)
         if (cell == "Q" || cell == "q")
             bye();
 
-        tic.Play(cell);
-        tic.Play();
-        tic.Print();
+        if (tic.Play(cell))
+        {
+            tic.Play();
+            tic.Print();
+        }
+        else
+            cout << cell << " is not a valid cell. Please try again." << endl;
 
         Winner winner = tic.CheckWinner();
 
