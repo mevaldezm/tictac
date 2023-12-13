@@ -20,7 +20,6 @@ void TicTac::Wait(int sec) const
        time_t end = time(NULL) * sec;
        while( time(NULL) < end ) ;
     */
-
     Sleep(1000 * sec); // Windows only
 }
 bool TicTac::Play()
@@ -177,7 +176,6 @@ void TicTac::Reset()
     for (short n{}; n < ROWS; ++n)
         for (short m{}; m < COLS; ++m)
             grid[n][m] = EMPTY;
-
 }
 
 /// @brief Map winning mark on grip with its user
@@ -240,7 +238,8 @@ void bye()
 
 void menu(UserOptions &options)
 {
-    static short game_count = 0;
+    static size_t game_count = 0;
+    //
     char choice = 'N';
 
     if (game_count > 0)
@@ -271,40 +270,39 @@ void menu(UserOptions &options)
              options.user_mark != 'O' &&
              options.user_mark != 'Q');
     //
-    cout << "Choose (Y, N) for game stater, (Q)uit: ";
-    cin >> options.game_starter;
-    //
-    options.game_starter = toupper(options.game_starter);
-    cin.clear();
-
-    if (options.game_starter == 'Q')
+    do
     {
-        bye();
-    }
-}
+        cout << "Choose (Y, N) for game stater, (Q)uit: ";
+        cin >> options.game_starter;
+        options.game_starter = toupper(options.game_starter);
+        cin.clear();
+
+        if (options.game_starter == 'Q')
+        {
+            bye();
+        }
+
+    } while (options.game_starter != 'Y' &&
+             options.game_starter != 'N' &&
+             options.user_mark != 'Q');
+
+}//menu
 
 void play(const UserOptions &options)
 {
     TicTac tic;
     string cell;
 
-    switch (options.user_mark)
+    if (options.user_mark == 'X' || options.user_mark == 'O')
     {
-    case 'X':
-    case 'O':
         tic.SetMarks(options.user_mark);
-        break;
-    default:
-        break;
     }
-    switch (options.game_starter)
+
+    if (options.game_starter == 'N')
     {
-    case 'N':
         tic.Play();
-        break;
-    default:
-        break;
     }
+
     tic.Print();
 
     for (short i = 0; i < CELLS; i++)
@@ -345,4 +343,4 @@ void play(const UserOptions &options)
     } // for
 
     tic.Reset();
-}
+}//play
