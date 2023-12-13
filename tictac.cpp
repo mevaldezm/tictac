@@ -15,16 +15,23 @@ TicTac::TicTac()
     play_count = 0;
 }
 
-void TicTac::Wait(int sec)
+void TicTac::Wait(int sec) const
 {
-    // time_t end = time(NULL) * sec;
-    // while( time(NULL) < end ) ;
-    Sleep(1000 * sec);
+    /*
+       time_t end = time(NULL) * sec;
+       while( time(NULL) < end ) ;
+    */
+
+    Sleep(1000 * sec); // Windows only
 }
-void TicTac::Play()
+bool TicTac::Play()
 {
+    if (PlayMark(game_mark, game_mark) || PlayMark(user_mark, game_mark))
+        return true;
+
     int count = 0;
-    srand((unsigned int)time(NULL));
+    
+    srand((unsigned)time(NULL));
 
     while (count < CELLS)
     {
@@ -35,10 +42,12 @@ void TicTac::Play()
         if (value == EMPTY)
         {
             grid[row][col] = game_mark;
-            break;
+            play_count++;
+            return true;
         }
         count++;
     }
+    return false;
 }
 
 bool TicTac::Play(const string &coord)
@@ -59,8 +68,6 @@ bool TicTac::Play(const string &coord)
         return true;
     }
 
-    play_count++;
-
     return false;
 }
 
@@ -70,7 +77,7 @@ void TicTac::SetMarks(char mark)
     game_mark = user_mark == NOUGHT ? CROSS : NOUGHT;
 }
 
-Winner TicTac::CheckWinner()
+Winner TicTac::CheckWinner() const
 {
     int count{};
 
@@ -102,6 +109,63 @@ Winner TicTac::CheckWinner()
     return NONE;
 }
 
+bool TicTac::PlayMark(Mark smark, Mark mark)
+{
+    // Check rows
+    for (short n{}; n < ROWS; n++)
+        if (grid[n][0] == smark && grid[n][1] == smark && grid[n][2] == EMPTY)
+        {
+            grid[n][2] = mark;
+            return true;
+        }
+        else if (grid[n][0] == EMPTY && grid[n][1] == smark && grid[n][2] == smark)
+        {
+            grid[n][0] = mark;
+            return true;
+        }
+        else if (grid[n][0] == smark && grid[n][1] == EMPTY && grid[n][2] == smark)
+        {
+            grid[n][1] = mark;
+            return true;
+        }
+
+    // check columns
+    for (short n{}; n < COLS; n++)
+        if (grid[0][n] == smark && grid[1][n] == smark && grid[2][n] == EMPTY)
+        {
+            grid[2][n] = mark;
+            return true;
+        }
+        else if (grid[0][n] == EMPTY && grid[1][n] == smark && grid[2][n] == smark)
+        {
+            grid[0][n] = mark;
+            return true;
+        }
+        else if (grid[0][n] == smark && grid[1][n] == EMPTY && grid[2][n] == smark)
+        {
+            grid[1][n] = mark;
+            return true;
+        }
+    // check diagonal
+    if (grid[0][0] == EMPTY && grid[1][1] == smark && grid[2][2] == smark)
+    {
+        grid[0][0] = mark;
+        return true;
+    }
+    else if (grid[0][0] == smark && grid[1][1] == EMPTY && grid[2][2] == smark)
+    {
+        grid[1][1] = mark;
+        return true;
+    }
+    else if (grid[0][0] == smark && grid[1][1] == smark && grid[2][2] == EMPTY)
+    {
+        grid[2][2] = mark;
+        return true;
+    }
+
+    return false;
+}
+
 void TicTac::Reset()
 {
     for (short n{}; n < ROWS; ++n)
@@ -110,7 +174,7 @@ void TicTac::Reset()
     play_count = 0;
 }
 
-Winner TicTac::MarkToWinner(Mark mark)
+Winner TicTac::MarkToWinner(Mark mark) const
 {
     Winner winner = Winner::NONE;
 
@@ -131,7 +195,7 @@ Winner TicTac::MarkToWinner(Mark mark)
     return winner;
 }
 
-short TicTac::GetRow(char row)
+short TicTac::GetRow(char row) const
 {
     for (short n{}; n < ROWS; ++n)
         if (rows[n] == row)
@@ -139,7 +203,7 @@ short TicTac::GetRow(char row)
     return -1;
 }
 
-void TicTac::Print()
+void TicTac::Print() const
 {
     cout << endl;
 
