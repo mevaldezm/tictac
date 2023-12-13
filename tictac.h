@@ -4,15 +4,15 @@ using namespace std;
 #ifndef __TICTAC__
 #define __TICTAC__
 
-const size_t CELLS = 9;
-const size_t ROWS  = 3;
-const size_t COLS  = 3;
+const short CELLS = 9;
+const short ROWS = 3;
+const short COLS = 3;
 
 enum Mark
 {
-    EMPTY  = 32, //SPACE
-    NOUGHT = 79, //ASCII O
-    CROSS  = 88  //ASCII X
+    EMPTY = 32,  // SPACE
+    NOUGHT = 79, // ASCII O
+    CROSS = 88   // ASCII X
 };
 enum Winner
 {
@@ -35,15 +35,17 @@ private:
     Mark user_mark;
     Mark game_mark;
     Winner MarkToWinner(Mark);
-    size_t GetRow(char);
+    short GetRow(char);
+    short play_count;
 
 public:
     TicTac();
     void Play();
     bool Play(const string &);
     void SetMarks(char);
-    Mark GetUserMark();
     Winner CheckWinner();
+    short GetPlayCount() const { return play_count; }
+    void ResetPlayCount() { play_count = 0; }
     void Reset();
     void Print();
     void Wait(int sec);

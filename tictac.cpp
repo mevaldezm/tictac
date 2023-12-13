@@ -9,17 +9,16 @@ using namespace std;
 
 TicTac::TicTac()
 {
-    for (size_t n{}; n < ROWS; ++n)
-        for (size_t m{}; m < COLS; ++m)
+    for (short n{}; n < ROWS; ++n)
+        for (short m{}; m < COLS; ++m)
             grid[n][m] = EMPTY;
+    play_count = 0;
 }
 
 void TicTac::Wait(int sec)
 {
     // time_t end = time(NULL) * sec;
     // while( time(NULL) < end ) ;
-
-    // window only
     Sleep(1000 * sec);
 }
 void TicTac::Play()
@@ -29,8 +28,8 @@ void TicTac::Play()
 
     while (count < CELLS)
     {
-        size_t row = rand() % ROWS;
-        size_t col = rand() % COLS;
+        short row = rand() % ROWS;
+        short col = rand() % COLS;
         Mark value = grid[row][col];
 
         if (value == EMPTY)
@@ -44,8 +43,8 @@ void TicTac::Play()
 
 bool TicTac::Play(const string &coord)
 {
-    size_t row = GetRow(toupper(coord[0]));
-    size_t col = atoi(coord.substr(1).c_str());
+    short row = GetRow(toupper(coord[0]));
+    short col = atoi(coord.substr(1).c_str());
 
     col--; // matrix column
 
@@ -59,6 +58,9 @@ bool TicTac::Play(const string &coord)
         grid[row][col] = user_mark;
         return true;
     }
+
+    play_count++;
+
     return false;
 }
 
@@ -68,22 +70,17 @@ void TicTac::SetMarks(char mark)
     game_mark = user_mark == NOUGHT ? CROSS : NOUGHT;
 }
 
-Mark TicTac::GetUserMark()
-{
-    return user_mark;
-}
-
 Winner TicTac::CheckWinner()
 {
     int count{};
 
     // check rows
-    for (size_t n{}; n < ROWS; n++)
+    for (short n{}; n < ROWS; n++)
         if (grid[n][0] == grid[n][1] && grid[n][0] == grid[n][2])
             return MarkToWinner(grid[n][0]);
 
     // check columns
-    for (size_t n{}; n < COLS; n++)
+    for (short n{}; n < COLS; n++)
         if (grid[0][n] == grid[1][n] && grid[0][n] == grid[2][n])
             return MarkToWinner(grid[0][n]);
 
@@ -94,8 +91,8 @@ Winner TicTac::CheckWinner()
     if (grid[0][2] == grid[1][1] && grid[1][1] == grid[2][0])
         return MarkToWinner(grid[0][2]);
 
-    for (size_t n{}; n < ROWS; ++n)
-        for (size_t m{}; m < COLS; ++m)
+    for (short n{}; n < ROWS; ++n)
+        for (short m{}; m < COLS; ++m)
             if (grid[n][m] != EMPTY)
                 count++;
 
@@ -107,9 +104,10 @@ Winner TicTac::CheckWinner()
 
 void TicTac::Reset()
 {
-    for (size_t n{}; n < ROWS; ++n)
-        for (size_t m{}; m < COLS; ++m)
+    for (short n{}; n < ROWS; ++n)
+        for (short m{}; m < COLS; ++m)
             grid[n][m] = EMPTY;
+    play_count = 0;
 }
 
 Winner TicTac::MarkToWinner(Mark mark)
@@ -133,9 +131,9 @@ Winner TicTac::MarkToWinner(Mark mark)
     return winner;
 }
 
-size_t TicTac::GetRow(char row)
+short TicTac::GetRow(char row)
 {
-    for (size_t n{}; n < ROWS; ++n)
+    for (short n{}; n < ROWS; ++n)
         if (rows[n] == row)
             return n;
     return -1;
@@ -145,16 +143,16 @@ void TicTac::Print()
 {
     cout << endl;
 
-    for (size_t i = 0; i < COLS; i++)
+    for (short i = 0; i < COLS; i++)
     {
         cout << setw(3) << " " << i + 1 << " ";
     }
     cout << "\n------------------\n";
 
-    for (size_t n{}; n < ROWS; ++n)
+    for (short n{}; n < ROWS; ++n)
     {
         cout << rows[n] << " | ";
-        for (size_t m{}; m < COLS; ++m)
+        for (short m{}; m < COLS; ++m)
             cout << (char)grid[n][m] << " | ";
         cout << endl;
     }
@@ -169,12 +167,12 @@ void bye()
 
 void menu(UserOptions &options)
 {
-    static size_t count = 0;
+    static short game_count = 0;
     char choice = 'N';
 
-    if (count > 0)
+    if (game_count > 0)
     {
-        cout << "\nEnter Y to continue playing: ";
+        cout << "\nKeep playing, (Y, N)?: ";
         cin >> choice;
         choice = toupper(choice);
         cin.clear();
@@ -182,7 +180,7 @@ void menu(UserOptions &options)
             bye();
     }
 
-    count++;
+    game_count++;
 
     do
     {
@@ -236,7 +234,7 @@ void play(const UserOptions &options)
     }
     tic.Print();
 
-    for (size_t i = 0; i < CELLS; i++)
+    for (short i = 0; i < CELLS; i++)
     {
         cout << "\nEnter a Cell (A1, B2,...), (Q)uit: ";
         cin >> cell;
@@ -251,7 +249,7 @@ void play(const UserOptions &options)
             tic.Print();
         }
         else
-            cout << "Invalid cell: " << cell <<". Try again." << endl;
+            cout << "Invalid cell: " << cell << ". Try again." << endl;
 
         Winner winner = tic.CheckWinner();
 
