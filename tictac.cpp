@@ -12,7 +12,6 @@ TicTac::TicTac()
     for (short n{}; n < ROWS; ++n)
         for (short m{}; m < COLS; ++m)
             grid[n][m] = EMPTY;
-    play_count = 0;
 }
 
 void TicTac::Wait(int sec) const
@@ -30,7 +29,7 @@ bool TicTac::Play()
         return true;
 
     int count = 0;
-    
+
     srand((unsigned)time(NULL));
 
     while (count < CELLS)
@@ -42,7 +41,6 @@ bool TicTac::Play()
         if (value == EMPTY)
         {
             grid[row][col] = game_mark;
-            play_count++;
             return true;
         }
         count++;
@@ -109,10 +107,16 @@ Winner TicTac::CheckWinner() const
     return NONE;
 }
 
+/// @brief Search for a contigous game mark to win or block oponent
+/// @param smark game mark to search on grid
+/// @param mark game mark to place on grid
+/// @return true or false
+
 bool TicTac::PlayMark(Mark smark, Mark mark)
 {
     // Check rows
     for (short n{}; n < ROWS; n++)
+    {
         if (grid[n][0] == smark && grid[n][1] == smark && grid[n][2] == EMPTY)
         {
             grid[n][2] = mark;
@@ -128,9 +132,10 @@ bool TicTac::PlayMark(Mark smark, Mark mark)
             grid[n][1] = mark;
             return true;
         }
-
+    }
     // check columns
     for (short n{}; n < COLS; n++)
+    {
         if (grid[0][n] == smark && grid[1][n] == smark && grid[2][n] == EMPTY)
         {
             grid[2][n] = mark;
@@ -146,6 +151,7 @@ bool TicTac::PlayMark(Mark smark, Mark mark)
             grid[1][n] = mark;
             return true;
         }
+    }
     // check diagonal
     if (grid[0][0] == EMPTY && grid[1][1] == smark && grid[2][2] == smark)
     {
@@ -171,9 +177,12 @@ void TicTac::Reset()
     for (short n{}; n < ROWS; ++n)
         for (short m{}; m < COLS; ++m)
             grid[n][m] = EMPTY;
-    play_count = 0;
+
 }
 
+/// @brief Map winning mark on grip with its user
+/// @param mark winning mark found on grid
+/// @return Winner
 Winner TicTac::MarkToWinner(Mark mark) const
 {
     Winner winner = Winner::NONE;
@@ -313,7 +322,7 @@ void play(const UserOptions &options)
             tic.Print();
         }
         else
-            cout << "Invalid cell: " << cell << ". Try again." << endl;
+            cout << "Wrong cell: " << cell << endl;
 
         Winner winner = tic.CheckWinner();
 
@@ -329,7 +338,7 @@ void play(const UserOptions &options)
         }
         else if (winner == DRAW)
         {
-            cout << "Game ended tie." << endl;
+            cout << "Game is tie." << endl;
             break;
         }
 

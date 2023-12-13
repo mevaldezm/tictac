@@ -36,7 +36,6 @@ private:
     Mark game_mark;
     Winner MarkToWinner(Mark) const;
     short GetRow(char) const;
-    size_t play_count;
 
 public:
     TicTac();
@@ -45,8 +44,6 @@ public:
     void SetMarks(char);
     Winner CheckWinner() const;
     bool PlayMark(Mark, Mark);
-    size_t GetPlayCount() const { return play_count; }
-    void ResetPlayCount() { play_count = 0; }
     void Reset();
     void Print() const;
     void Wait(int sec) const;
