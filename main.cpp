@@ -1,9 +1,12 @@
 #include "tictac.h"
+#include <csignal>
+#include <iostream>
 using namespace std;
 
-int main(){
-	
-    UserOptions options;
+int main()
+{
+
+   UserOptions options;
 
     while (true)
     {
@@ -11,5 +14,4 @@ int main(){
         play(options);
 
     } // while
-
 }

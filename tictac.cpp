@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <iomanip>
 #include <windows.h>
+#include <csignal>
 #include "tictac.h"
 using namespace std;
 
@@ -106,7 +107,7 @@ Winner TicTac::CheckWinner() const
     return NONE;
 }
 
-/// @brief Search for a contigous game mark to win or block oponent
+/// @brief Search for a contigous game mark to place mark to win block opponent
 /// @param smark game mark to search on grid
 /// @param mark game mark to place on grid
 /// @return true or false
@@ -131,7 +132,8 @@ bool TicTac::PlayMark(Mark smark, Mark mark)
             grid[n][1] = mark;
             return true;
         }
-    }
+    } // for
+
     // check columns
     for (short n{}; n < COLS; n++)
     {
@@ -150,8 +152,9 @@ bool TicTac::PlayMark(Mark smark, Mark mark)
             grid[1][n] = mark;
             return true;
         }
-    }
-    // check diagonal
+    } // for
+
+    // check diagonal downward
     if (grid[0][0] == EMPTY && grid[1][1] == smark && grid[2][2] == smark)
     {
         grid[0][0] = mark;
@@ -167,7 +170,22 @@ bool TicTac::PlayMark(Mark smark, Mark mark)
         grid[2][2] = mark;
         return true;
     }
-
+	// check diagonal upward
+	if (grid[2][0] == EMPTY && grid[1][1] == smark && grid[0][2] == smark)
+    {
+        grid[2][0] = mark;
+        return true;
+    }
+    else if (grid[2][0] == smark && grid[1][1] == EMPTY && grid[0][2] == smark)
+    {
+        grid[1][1] = mark;
+        return true;
+    }
+    else if (grid[2][0] == smark && grid[1][1] == smark && grid[0][2] == EMPTY)
+    {
+        grid[0][2] = mark;
+        return true;
+    }
     return false;
 }
 
@@ -218,7 +236,7 @@ void TicTac::Print() const
     {
         cout << setw(3) << " " << i + 1 << " ";
     }
-    cout << "\n------------------\n";
+    cout << "\n---------------\n";
 
     for (short n{}; n < ROWS; ++n)
     {
@@ -234,6 +252,11 @@ void bye()
 {
     cout << "Thank you for playing" << endl;
     exit(0);
+}
+void die(int sig)
+{
+    cout << "Thank you for playing" << endl;
+    exit(sig);
 }
 
 void menu(UserOptions &options)
@@ -286,7 +309,7 @@ void menu(UserOptions &options)
              options.game_starter != 'N' &&
              options.user_mark != 'Q');
 
-}//menu
+} // menu
 
 void play(const UserOptions &options)
 {
@@ -343,4 +366,4 @@ void play(const UserOptions &options)
     } // for
 
     tic.Reset();
-}//play
+} // play

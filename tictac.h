@@ -1,18 +1,16 @@
 #include <string>
-using namespace std;
-
 #ifndef __TICTAC__
 #define __TICTAC__
 
 const short CELLS = 9;
-const short ROWS  = 3;
-const short COLS  = 3;
+const short ROWS = 3;
+const short COLS = 3;
 
 enum Mark
 {
-    EMPTY  = 32,  // ASCII SPACE
-    NOUGHT = 79,  // ASCII O
-    CROSS  = 88   // ASCII X
+    EMPTY = 32,  // ASCII SPACE
+    NOUGHT = 79, // ASCII O
+    CROSS = 88   // ASCII X
 };
 enum Winner
 {
@@ -31,7 +29,7 @@ class TicTac
 {
 private:
     Mark grid[ROWS][COLS];
-    char rows[ROWS] = {'A', 'B', 'C'};
+    const char rows[ROWS] = {'A', 'B', 'C'};
     Mark user_mark;
     Mark game_mark;
     Winner MarkToWinner(Mark) const;
@@ -40,7 +38,7 @@ private:
 public:
     TicTac();
     bool Play();
-    bool Play(const string &);
+    bool Play(const std::string &);
     void SetMarks(char);
     Winner CheckWinner() const;
     bool PlayMark(Mark, Mark);
@@ -52,5 +50,6 @@ public:
 void menu(UserOptions &);
 void play(const UserOptions &);
 void bye();
+void die(int);
 
-#endif __TICTAC__
+#endif
