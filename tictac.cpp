@@ -8,6 +8,7 @@
 #include "tictac.h"
 using namespace std;
 
+
 TicTac::TicTac()
 {
     for (short n{}; n < ROWS; ++n)
@@ -25,7 +26,7 @@ void TicTac::Wait(int sec) const
 }
 bool TicTac::Play()
 {
-    if (PlayMark(game_mark, game_mark) || PlayMark(user_mark, game_mark))
+    if (playMark(gameMark, gameMark) || playMark(userMark, gameMark))
         return true;
 
     int count = 0;
@@ -40,7 +41,7 @@ bool TicTac::Play()
 
         if (value == EMPTY)
         {
-            grid[row][col] = game_mark;
+            grid[row][col] = gameMark;
             return true;
         }
         count++;
@@ -48,21 +49,21 @@ bool TicTac::Play()
     return false;
 }
 
-bool TicTac::Play(const string &coord)
+bool TicTac::Play(const string &cell)
 {
-    short row = GetRow(toupper(coord[0]));
-    short col = atoi(coord.substr(1).c_str());
+    short col = getCol(toupper(cell[0]));
+    short row = atoi(cell.substr(1).c_str());
 
-    col--; // matrix column
+    row--; // matrix row
 
     if ((col < 0 || col > 2) || (row < 0 || row > 2))
         return false;
 
-    Mark value = grid[row][col];
+    Mark mark = grid[row][col];
 
-    if (value == EMPTY)
+    if (mark == EMPTY)
     {
-        grid[row][col] = user_mark;
+        grid[row][col] = userMark;
         return true;
     }
 
@@ -71,8 +72,8 @@ bool TicTac::Play(const string &coord)
 
 void TicTac::SetMarks(char mark)
 {
-    user_mark = (Mark)toupper(mark);
-    game_mark = user_mark == NOUGHT ? CROSS : NOUGHT;
+    userMark = (Mark)toupper(mark);
+    gameMark = userMark == NOUGHT ? CROSS : NOUGHT;
 }
 
 Winner TicTac::CheckWinner() const
@@ -82,19 +83,19 @@ Winner TicTac::CheckWinner() const
     // check rows
     for (short n{}; n < ROWS; n++)
         if (grid[n][0] == grid[n][1] && grid[n][0] == grid[n][2])
-            return MarkToWinner(grid[n][0]);
+            return markToWinner(grid[n][0]);
 
     // check columns
     for (short n{}; n < COLS; n++)
         if (grid[0][n] == grid[1][n] && grid[0][n] == grid[2][n])
-            return MarkToWinner(grid[0][n]);
+            return markToWinner(grid[0][n]);
 
     // check diagonal
     if (grid[0][0] == grid[1][1] && grid[1][1] == grid[2][2])
-        return MarkToWinner(grid[0][0]);
+        return markToWinner(grid[0][0]);
 
     if (grid[0][2] == grid[1][1] && grid[1][1] == grid[2][0])
-        return MarkToWinner(grid[0][2]);
+        return markToWinner(grid[0][2]);
 
     for (short n{}; n < ROWS; ++n)
         for (short m{}; m < COLS; ++m)
@@ -112,7 +113,7 @@ Winner TicTac::CheckWinner() const
 /// @param mark game mark to place on grid
 /// @return true or false
 
-bool TicTac::PlayMark(Mark smark, Mark mark)
+bool TicTac::playMark(Mark smark, Mark mark)
 {
     // Check rows
     for (short n{}; n < ROWS; n++)
@@ -199,17 +200,17 @@ void TicTac::Reset()
 /// @brief Map winning mark on grip with its user
 /// @param mark winning mark found on grid
 /// @return Winner
-Winner TicTac::MarkToWinner(Mark mark) const
+Winner TicTac::markToWinner(Mark mark) const
 {
     Winner winner = Winner::NONE;
 
     switch (mark)
     {
     case CROSS:
-        winner = user_mark == CROSS ? USER : GAME;
+        winner = userMark == CROSS ? USER : GAME;
         break;
     case NOUGHT:
-        winner = user_mark == NOUGHT ? USER : GAME;
+        winner = userMark == NOUGHT ? USER : GAME;
         break;
     case EMPTY:
         winner = NONE;
@@ -220,10 +221,10 @@ Winner TicTac::MarkToWinner(Mark mark) const
     return winner;
 }
 
-short TicTac::GetRow(char row) const
+short TicTac::getCol(char col) const
 {
-    for (short n{}; n < ROWS; ++n)
-        if (rows[n] == row)
+    for (short n{}; n < COLS; ++n)
+        if (cols[n] == col)
             return n;
     return -1;
 }
@@ -234,13 +235,13 @@ void TicTac::Print() const
 
     for (short i = 0; i < COLS; i++)
     {
-        cout << setw(3) << " " << i + 1 << " ";
+        cout << "   " << cols[i] ;
     }
     cout << "\n---------------\n";
 
     for (short n{}; n < ROWS; ++n)
     {
-        cout << rows[n] << " | ";
+		cout << n + 1 <<  " | ";
         for (short m{}; m < COLS; ++m)
             cout << (char)grid[n][m] << " | ";
         cout << endl;
@@ -280,34 +281,34 @@ void menu(UserOptions &options)
     do
     {
         cout << "Choose a mark (X, O), (Q)uit ";
-        cin >> options.user_mark;
-        options.user_mark = toupper(options.user_mark);
+        cin >> options.userMark;
+        options.userMark = toupper(options.userMark);
         cin.clear();
 
-        if (options.user_mark == 'Q')
+        if (options.userMark == 'Q')
         {
             bye();
         }
 
-    } while (options.user_mark != 'X' &&
-             options.user_mark != 'O' &&
-             options.user_mark != 'Q');
+    } while (options.userMark != 'X' &&
+             options.userMark != 'O' &&
+             options.userMark != 'Q');
     //
     do
     {
         cout << "Choose (Y, N) for game stater, (Q)uit: ";
-        cin >> options.game_starter;
-        options.game_starter = toupper(options.game_starter);
+        cin >> options.gameStarter;
+        options.gameStarter = toupper(options.gameStarter);
         cin.clear();
 
-        if (options.game_starter == 'Q')
+        if (options.gameStarter == 'Q')
         {
             bye();
         }
 
-    } while (options.game_starter != 'Y' &&
-             options.game_starter != 'N' &&
-             options.user_mark != 'Q');
+    } while (options.gameStarter != 'Y' &&
+             options.gameStarter != 'N' &&
+             options.userMark != 'Q');
 
 } // menu
 
@@ -316,12 +317,12 @@ void play(const UserOptions &options)
     TicTac tic;
     string cell;
 
-    if (options.user_mark == 'X' || options.user_mark == 'O')
+    if (options.userMark == 'X' || options.userMark == 'O')
     {
-        tic.SetMarks(options.user_mark);
+        tic.SetMarks(options.userMark);
     }
 
-    if (options.game_starter == 'N')
+    if (options.gameStarter == 'N')
     {
         tic.Play();
     }
