@@ -44,7 +44,6 @@ public:
     Winner CheckWinner() const;
     void Reset();
     void Print() const;
-    void Wait(int sec) const;
 };
 
 void menu(UserOptions &);

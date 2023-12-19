@@ -3,9 +3,8 @@
 #include <ctime>
 #include <cstdlib>
 #include <iomanip>
-#include <windows.h>
-#include <csignal>
 #include "tictac.h"
+
 using namespace std;
 
 
@@ -16,14 +15,6 @@ TicTac::TicTac()
             grid[n][m] = EMPTY;
 }
 
-void TicTac::Wait(int sec) const
-{
-    /*
-       time_t end = time(NULL) * sec;
-       while( time(NULL) < end ) ;
-    */
-    Sleep(1000 * sec); // Windows only
-}
 bool TicTac::Play()
 {
     if (playMark(gameMark, gameMark) || playMark(userMark, gameMark))
