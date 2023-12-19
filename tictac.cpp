@@ -351,7 +351,7 @@ void play(const UserOptions &options)
         }
         else if (winner == DRAW)
         {
-            cout << "Game is tie." << endl;
+            cout << "Draw. Neither won !!" << endl;
             break;
         }
 
