@@ -4,8 +4,6 @@
 #include <cstdlib>
 #include "tictac.h"
 
-using namespace std;
-
 
 TicTac::TicTac()
 {
@@ -40,7 +38,7 @@ bool TicTac::Play()
     return false;
 }
 
-bool TicTac::Play(const string &cell)
+bool TicTac::Play(const std::string &cell)
 {
     short col = getCol(toupper(cell[0]));
     short row = atoi(cell.substr(1).c_str());
@@ -222,27 +220,27 @@ short TicTac::getCol(char col) const
 
 void TicTac::Print() const
 {
-    cout << endl;
+    std::cout << std::endl;
 
     for (short i = 0; i < COLS; i++)
     {
-        cout << "   " << cols[i] ;
+        std::cout << "   " << cols[i] ;
     }
-    cout << "\n---------------\n";
+    std::cout << "\n---------------\n";
 
     for (short n{}; n < ROWS; ++n)
     {
-		cout << n + 1 <<  " | ";
+		std::cout << n + 1 <<  " | ";
         for (short m{}; m < COLS; ++m)
-            cout << (char)grid[n][m] << " | ";
-        cout << endl;
+            std::cout << (char)grid[n][m] << " | ";
+        std::cout << std::endl;
     }
-    cout << endl;
+    std::cout << std::endl;
 }
 
 void bye()
 {
-    cout << "Thank you for playing" << endl;
+    std::cout << "Thank you for playing" << std::endl;
     exit(0);
 }
 
@@ -254,10 +252,10 @@ void menu(UserOptions &options)
 
     if (game_count > 0)
     {
-        cout << "\nKeep playing, (Y, N)?: ";
-        cin >> choice;
+        std::cout << "\nKeep playing, (Y, N)?: ";
+        std::cin >> choice;
         choice = toupper(choice);
-        cin.clear();
+        std::cin.clear();
         if (choice != 'Y')
             bye();
     }
@@ -266,10 +264,10 @@ void menu(UserOptions &options)
 
     do
     {
-        cout << "Choose a mark (X, O), (Q)uit ";
-        cin >> options.userMark;
+        std::cout << "Choose a mark (X, O), (Q)uit ";
+        std::cin >> options.userMark;
         options.userMark = toupper(options.userMark);
-        cin.clear();
+        std::cin.clear();
 
         if (options.userMark == 'Q')
         {
@@ -282,10 +280,10 @@ void menu(UserOptions &options)
     //
     do
     {
-        cout << "Choose (Y, N) for game stater, (Q)uit: ";
-        cin >> options.gameStarter;
+        std::cout << "Choose (Y, N) for game stater, (Q)uit: ";
+        std::cin >> options.gameStarter;
         options.gameStarter = toupper(options.gameStarter);
-        cin.clear();
+        std::cin.clear();
 
         if (options.gameStarter == 'Q')
         {
@@ -301,7 +299,7 @@ void menu(UserOptions &options)
 void play(const UserOptions &options)
 {
     TicTac tic;
-    string cell;
+    std::string cell;
 
     if (options.userMark == 'X' || options.userMark == 'O')
     {
@@ -317,9 +315,9 @@ void play(const UserOptions &options)
 
     for (short i = 0; i < CELLS; i++)
     {
-        cout << "\nEnter a Cell (A1, B2,...), (Q)uit: ";
-        cin >> cell;
-        cin.clear();
+        std::cout << "\nEnter a Cell (A1, B2,...), (Q)uit: ";
+        std::cin >> cell;
+        std::cin.clear();
         //
         if (cell == "Q" || cell == "q")
             bye();
@@ -330,23 +328,23 @@ void play(const UserOptions &options)
             tic.Print();
         }
         else
-            cout << "Wrong cell: " << cell << endl;
+            std::cout << "Wrong cell: " << cell << std::endl;
 
         Winner winner = tic.CheckWinner();
 
         if (winner == USER)
         {
-            cout << "You won !!" << endl;
+            std::cout << "You won !!" << std::endl;
             break;
         }
         else if (winner == GAME)
         {
-            cout << "Game won!!" << endl;
+            std::cout << "Game won!!" << std::endl;
             break;
         }
         else if (winner == DRAW)
         {
-            cout << "Draw. Neither won !!" << endl;
+            std::cout << "Draw. Neither won !!" << std::endl;
             break;
         }
 
