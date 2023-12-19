@@ -244,11 +244,6 @@ void bye()
     cout << "Thank you for playing" << endl;
     exit(0);
 }
-void die(int sig)
-{
-    cout << "Thank you for playing" << endl;
-    exit(sig);
-}
 
 void menu(UserOptions &options)
 {
