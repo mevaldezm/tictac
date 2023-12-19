@@ -2,7 +2,6 @@
 #include <string>
 #include <ctime>
 #include <cstdlib>
-#include <iomanip>
 #include "tictac.h"
 
 using namespace std;

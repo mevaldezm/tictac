@@ -1,7 +1,4 @@
 #include "tictac.h"
-#include <csignal>
-#include <iostream>
-using namespace std;
 
 int main()
 {
@@ -14,4 +11,5 @@ int main()
         play(options);
 
     } // while
+	return 0;
 }
