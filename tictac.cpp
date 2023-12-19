@@ -16,6 +16,7 @@ TicTac::TicTac()
 
 bool TicTac::Play()
 {
+	//Try to win first,unless otherwise try to block oppenent
     if (playMark(gameMark, gameMark) || playMark(userMark, gameMark))
         return true;
 
@@ -27,9 +28,9 @@ bool TicTac::Play()
     {
         short row = rand() % ROWS;
         short col = rand() % COLS;
-        Mark value = grid[row][col];
+        Mark mark = grid[row][col];
 
-        if (value == EMPTY)
+        if (mark == EMPTY)
         {
             grid[row][col] = gameMark;
             return true;
