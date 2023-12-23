@@ -14,8 +14,8 @@ TicTac::TicTac()
 
 bool TicTac::Play()
 {
-	//Try to win first,unless otherwise try to block oppenent
-    if (playMark(gameMark, gameMark) || playMark(userMark, gameMark))
+	//Try to win first, otherwise try to block oppenent
+    if ( placeMark(gameMark, gameMark) || placeMark(userMark, gameMark) )
         return true;
 
     int count = 0;
@@ -38,10 +38,11 @@ bool TicTac::Play()
     return false;
 }
 
-bool TicTac::Play(const std::string &cell)
+bool TicTac::Play(std::string &cell)
 {
-    short col = getCol(toupper(cell[0]));
-    short row = atoi(cell.substr(1).c_str());
+     short col = toupper(cell[0]) - 'A'; //to col position: A-A = 0, B-A = 1
+     short row = cell[1] - '0'; //ascii number to an int 
+    
 
     row--; // matrix row
 
@@ -97,12 +98,12 @@ Winner TicTac::CheckWinner() const
     return NONE;
 }
 
-/// @brief Search for a contigous game mark to place mark to win block opponent
+/// @brief Search for a contigous game mark to place a mark to win block opponent
 /// @param smark game mark to search on grid
 /// @param mark game mark to place on grid
 /// @return true or false
 
-bool TicTac::playMark(Mark smark, Mark mark)
+bool TicTac::placeMark(Mark smark, Mark mark)
 {
     // Check rows
     for (short n{}; n < ROWS; n++)
@@ -210,29 +211,21 @@ Winner TicTac::markToWinner(Mark mark) const
     return winner;
 }
 
-short TicTac::getCol(char col) const
-{
-    for (short n{}; n < COLS; ++n)
-        if (cols[n] == col)
-            return n;
-    return -1;
-}
-
 void TicTac::Print() const
 {
     std::cout << std::endl;
 
-    for (short i = 0; i < COLS; i++)
+    for (char c = 'A'; c < COLS + 'A'; c++)
     {
-        std::cout << "   " << cols[i] ;
+        std::cout << "   " << c ;
     }
     std::cout << "\n---------------\n";
 
-    for (short n{}; n < ROWS; ++n)
+    for (short r{}; r < ROWS; ++r)
     {
-		std::cout << n + 1 <<  " | ";
-        for (short m{}; m < COLS; ++m)
-            std::cout << (char)grid[n][m] << " | ";
+		std::cout << r + 1 <<  " | ";
+        for (short c{}; c < COLS; ++c)
+            std::cout << (char)grid[r][c] << " | ";
         std::cout << std::endl;
     }
     std::cout << std::endl;
@@ -244,7 +237,7 @@ void bye()
     exit(0);
 }
 
-void menu(UserOptions &options)
+void menu(GameOptions &options)
 {
     static size_t game_count = 0;
     //
@@ -265,48 +258,48 @@ void menu(UserOptions &options)
     do
     {
         std::cout << "Choose a mark (X, O), (Q)uit ";
-        std::cin >> options.userMark;
-        options.userMark = toupper(options.userMark);
+        std::cin >> options.UserMark;
+        options.UserMark = toupper(options.UserMark);
         std::cin.clear();
 
-        if (options.userMark == 'Q')
+        if (options.UserMark == 'Q')
         {
             bye();
         }
 
-    } while (options.userMark != 'X' &&
-             options.userMark != 'O' &&
-             options.userMark != 'Q');
+    } while (options.UserMark != 'X' &&
+             options.UserMark != 'O' &&
+             options.UserMark != 'Q');
     //
     do
     {
         std::cout << "Choose (Y, N) for game stater, (Q)uit: ";
-        std::cin >> options.gameStarter;
-        options.gameStarter = toupper(options.gameStarter);
+        std::cin >> options.Starter;
+        options.Starter = toupper(options.Starter);
         std::cin.clear();
 
-        if (options.gameStarter == 'Q')
+        if (options.Starter == 'Q')
         {
             bye();
         }
 
-    } while (options.gameStarter != 'Y' &&
-             options.gameStarter != 'N' &&
-             options.userMark != 'Q');
+    } while (options.Starter != 'Y' &&
+             options.Starter != 'N' &&
+             options.UserMark != 'Q');
 
 } // menu
 
-void play(const UserOptions &options)
+void play(const GameOptions &options)
 {
     TicTac tic;
     std::string cell;
 
-    if (options.userMark == 'X' || options.userMark == 'O')
+    if (options.UserMark == 'X' || options.UserMark == 'O')
     {
-        tic.SetMarks(options.userMark);
+        tic.SetMarks(options.UserMark);
     }
 
-    if (options.gameStarter == 'N')
+    if (options.Starter == 'N')
     {
         tic.Play();
     }

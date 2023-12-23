@@ -3,7 +3,7 @@
 int main()
 {
 
-   UserOptions options;
+   GameOptions options;
 
     while (true)
     {

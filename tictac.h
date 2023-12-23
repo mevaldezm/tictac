@@ -19,35 +19,34 @@ enum Winner
     USER,
     DRAW
 };
-struct UserOptions
+struct GameOptions
 {
-    char userMark;
-    char gameStarter;
+    char UserMark;
+    char GameMark;
+    char Starter;
 };
 
 class TicTac
 {
 private:
     Mark grid[ROWS][COLS];
-    const char cols[COLS] = {'A', 'B', 'C'};
     Mark userMark;
     Mark gameMark;
     Winner markToWinner(Mark) const;
-	bool playMark(Mark, Mark);
-    short getCol(char) const;
-
+	bool placeMark(Mark, Mark);
+    
 public:
     TicTac();
     bool Play();
-    bool Play(const std::string &);
+    bool Play(std::string &);
     void SetMarks(char);
     Winner CheckWinner() const;
     void Reset();
     void Print() const;
 };
 
-void menu(UserOptions &);
-void play(const UserOptions &);
+void menu(GameOptions &);
+void play(const GameOptions &);
 void bye();
 
 #endif
