@@ -4,7 +4,6 @@
 #include <cstdlib>
 #include "tictac.h"
 
-
 TicTac::TicTac()
 {
     for (short n{}; n < ROWS; ++n)
@@ -14,8 +13,8 @@ TicTac::TicTac()
 
 bool TicTac::Play()
 {
-	//Try to win first, otherwise try to block oppenent
-    if ( placeMark(gameMark, gameMark) || placeMark(userMark, gameMark) )
+    // Try to win first, otherwise try to block oppenent
+    if (placeMark(gameMark, gameMark) || placeMark(userMark, gameMark))
         return true;
 
     int count = 0;
@@ -40,9 +39,8 @@ bool TicTac::Play()
 
 bool TicTac::Play(std::string &cell)
 {
-     short col = toupper(cell[0]) - 'A'; //to col position: A-A = 0, B-A = 1
-     short row = cell[1] - '0'; //ascii number to an int 
-    
+    short col = toupper(cell[0]) - 'A'; // to col position: A-A = 0, B-A = 1
+    short row = cell[1] - '0';          // ascii number to an int
 
     row--; // matrix row
 
@@ -161,8 +159,8 @@ bool TicTac::placeMark(Mark smark, Mark mark)
         grid[2][2] = mark;
         return true;
     }
-	// check diagonal upward
-	if (grid[2][0] == EMPTY && grid[1][1] == smark && grid[0][2] == smark)
+    // check diagonal upward
+    if (grid[2][0] == EMPTY && grid[1][1] == smark && grid[0][2] == smark)
     {
         grid[2][0] = mark;
         return true;
@@ -217,18 +215,19 @@ void TicTac::Print() const
 
     for (char c = 'A'; c < COLS + 'A'; c++)
     {
-        std::cout << "   " << c ;
+        std::cout << "   " << c;
     }
     std::cout << "\n---------------\n";
 
     for (short r{}; r < ROWS; ++r)
     {
-		std::cout << r + 1 <<  " | ";
+        std::cout << r + 1 << " | ";
         for (short c{}; c < COLS; ++c)
             std::cout << (char)grid[r][c] << " | ";
         std::cout << std::endl;
     }
-    std::cout << std::endl;
+    std::cout << "---------------\n";
+    // std::cout << std::endl;
 }
 
 void bye()
@@ -254,10 +253,11 @@ void menu(GameOptions &options)
     }
 
     game_count++;
+    std::cout << "Enter (Q) at any prompt to quit" << std::endl;
 
     do
     {
-        std::cout << "Choose a mark (X, O), (Q)uit ";
+        std::cout << "Enter a mark (X, O): ";
         std::cin >> options.UserMark;
         options.UserMark = toupper(options.UserMark);
         std::cin.clear();
@@ -273,7 +273,7 @@ void menu(GameOptions &options)
     //
     do
     {
-        std::cout << "Choose (Y, N) for game stater, (Q)uit: ";
+        std::cout << "Enter (Y) to play first, (N) for computer: ";
         std::cin >> options.Starter;
         options.Starter = toupper(options.Starter);
         std::cin.clear();
@@ -293,11 +293,8 @@ void play(const GameOptions &options)
 {
     TicTac tic;
     std::string cell;
-
-    if (options.UserMark == 'X' || options.UserMark == 'O')
-    {
-        tic.SetMarks(options.UserMark);
-    }
+    Winner winner = NONE;
+    tic.SetMarks(options.UserMark);
 
     if (options.Starter == 'N')
     {
@@ -308,7 +305,8 @@ void play(const GameOptions &options)
 
     for (short i = 0; i < CELLS; i++)
     {
-        std::cout << "\nEnter a Cell (A1, B2,...), (Q)uit: ";
+
+        std::cout << "\nEnter a cell (A1, B2,...): ";
         std::cin >> cell;
         std::cin.clear();
         //
@@ -317,28 +315,35 @@ void play(const GameOptions &options)
 
         if (tic.Play(cell))
         {
-            tic.Play();
+           
+            if (winner == NONE)
+            {
+                tic.Play();
+            }
             tic.Print();
+
+            winner = tic.CheckWinner();
+
+            if (winner == USER)
+            {
+                std::cout << "You won !!" << std::endl;
+                return;
+            }
+            else if (winner == GAME)
+            {
+                std::cout << "Game won!!" << std::endl;
+                return;
+            }
+            else if (winner == DRAW)
+            {
+                std::cout << "Draw. Neither won !!" << std::endl;
+                return;
+            }
         }
         else
-            std::cout << "Wrong cell: " << cell << std::endl;
-
-        Winner winner = tic.CheckWinner();
-
-        if (winner == USER)
         {
-            std::cout << "You won !!" << std::endl;
-            break;
-        }
-        else if (winner == GAME)
-        {
-            std::cout << "Game won!!" << std::endl;
-            break;
-        }
-        else if (winner == DRAW)
-        {
-            std::cout << "Draw. Neither won !!" << std::endl;
-            break;
+            std::cout << "Your entered a wrong cell: " << cell << std::endl;
+            i--;
         }
 
     } // for
