@@ -2,9 +2,9 @@
 #ifndef __TICTAC__
 #define __TICTAC__
 
-const short CELLS = 9;
-const short ROWS = 3;
-const short COLS = 3;
+enum { CELLS = 9 };
+enum { ROWS = 3 };
+enum { COLS = 3 };
 
 enum Mark
 {
