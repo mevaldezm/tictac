@@ -315,14 +315,14 @@ void play(const GameOptions &options)
 
         if (tic.Play(cell))
         {
-           
+            winner = tic.CheckWinner();
+
             if (winner == NONE)
             {
                 tic.Play();
+                winner = tic.CheckWinner();
             }
             tic.Print();
-
-            winner = tic.CheckWinner();
 
             if (winner == USER)
             {
