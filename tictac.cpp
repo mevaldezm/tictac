@@ -13,7 +13,7 @@ TicTac::TicTac()
 
 bool TicTac::Play()
 {
-    // Try to win first, otherwise try to block oppenent
+    // Try to win first, otherwise try to block opponent
     if (placeMark(gameMark, gameMark) || placeMark(userMark, gameMark))
         return true;
 
@@ -78,7 +78,7 @@ Winner TicTac::CheckWinner() const
         if (grid[0][n] == grid[1][n] && grid[0][n] == grid[2][n])
             return markToWinner(grid[0][n]);
 
-    // check diagonal
+    // check diagonals
     if (grid[0][0] == grid[1][1] && grid[1][1] == grid[2][2])
         return markToWinner(grid[0][0]);
 
@@ -227,7 +227,7 @@ void TicTac::Print() const
         std::cout << std::endl;
     }
     std::cout << "---------------\n";
-    // std::cout << std::endl;
+    
 }
 
 void bye()
@@ -342,7 +342,7 @@ void play(const GameOptions &options)
         }
         else
         {
-            std::cout << "Your entered a wrong cell: " << cell << std::endl;
+            std::cout << "You entered a wrong cell: " << cell << std::endl;
             i--;
         }
 
