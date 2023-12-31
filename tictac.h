@@ -42,11 +42,11 @@ public:
     void SetMarks(char);
     Winner CheckWinner() const;
     void Reset();
+    static std::string RightPad(std::string, char , short);
     void Print() const;
 };
 
+void bye();
 void menu(GameOptions &);
 void play(const GameOptions &);
-void bye();
-
 #endif

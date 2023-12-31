@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <ctime>
 #include <cstdlib>
 #include "tictac.h"
@@ -41,7 +42,7 @@ bool TicTac::Play(std::string &cell)
 {
     short col = toupper(cell[0]) - 'A'; // to col position: A-A = 0, B-A = 1
     short row = cell[1] - '0';          // ascii number to an int
-
+   
     row--; // matrix row
 
     if ((col < 0 || col > 2) || (row < 0 || row > 2))
@@ -185,6 +186,18 @@ void TicTac::Reset()
             grid[n][m] = EMPTY;
 }
 
+std::string TicTac::RightPad(std::string str, char pad, short padLen)
+{
+    std::ostringstream oss(str);
+
+    for (size_t i = 0; i < padLen; i++)
+    {
+        oss << pad;
+    }
+    
+    return oss.str();
+}
+
 /// @brief Map winning mark on grip with its user
 /// @param mark winning mark found on grid
 /// @return Winner
@@ -212,12 +225,14 @@ Winner TicTac::markToWinner(Mark mark) const
 void TicTac::Print() const
 {
     std::cout << std::endl;
+    std::string devider = RightPad("-",'-',15);
 
     for (char c = 'A'; c < COLS + 'A'; c++)
     {
         std::cout << "   " << c;
     }
-    std::cout << "\n---------------\n";
+    
+    std::cout << std::endl << devider << std::endl;
 
     for (short r{}; r < ROWS; ++r)
     {
@@ -226,8 +241,7 @@ void TicTac::Print() const
             std::cout << (char)grid[r][c] << " | ";
         std::cout << std::endl;
     }
-    std::cout << "---------------\n";
-    
+    std::cout << devider << std::endl;
 }
 
 void bye()
