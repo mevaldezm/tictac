@@ -362,5 +362,4 @@ void play(const GameOptions &options)
 
     } // for
 
-    tic.Reset();
 } // play
